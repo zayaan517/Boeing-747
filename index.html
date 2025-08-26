@@ -640,61 +640,6 @@ blockquote {
     section {
       padding: 100px 20px;
       border-bottom: 1px solid #ddd;
-    }
-  </style>
-  <script>
-    function goToHeading(event) {
-      event.preventDefault();
-      let query = document.getElementById("search").value.toLowerCase();
-
-      // Map keywords to heading IDs
-      const sections = {
-        "747": "boeing747",
-        "airbus": "airbus",
-        "engines": "engines",
-        "aviation": "aviation"
-      };
-
-      if (sections[query]) {
-        document.getElementById(sections[query]).scrollIntoView({behavior: "smooth"});
-      } else {
-        alert("Section not found! Try: 747, Airbus, Engines, Aviation...");
-      }
-    }
-  </script>
-</head>
-<body>
-  <!-- Search bar at top -->
-  <div id="searchBar">
-    <form onsubmit="goToHeading(event)">
-      <input type="text" id="search" placeholder="Go to section (747, Airbus, Engines)...">
-      <button type="submit">Go</button>
-    </form>
-  </div>
-  <div id="searchBar">
-  <form onsubmit="goToHeading(event)">
-    <input type="text" id="search" placeholder="Type a heading...">
-    <button type="submit">Go</button>
-  </form>
-</div>
-
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Aviation Website</title>
-  <style>
-    /* Search bar styling */
-    #searchBar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 10px;
-      background: #f8f8f8;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      display: flex;
-      justify-content: center;
-      gap: 10px;
       z-index: 1000;
     }
 
@@ -6760,9 +6705,9 @@ It was taller than the Wright Brothers' first flight was long!</P>
 <section id="gallery">
   <h2>📸 747 Image Gallery</h2>
   <p><em>(Image placeholders)</em></p>
-  <img src="https://via.placeholder.com/600x300?text=Boeing+747+Takeoff" alt="747 Takeoff" />
-  <img src="https://via.placeholder.com/600x300?text=747+Cockpit" alt="747 Cockpit" />
-  <img src="https://via.placeholder.com/600x300?text=747+Interior+Upper+Deck" alt="747 Upper Deck" />
+  <img src="https://d1a2ot8agkqe8w.cloudfront.net/web/2019/01/747-first-flight-takeoff-c-boeing_75956.jpg" alt="747 Takeoff" />
+  <img src="https://thumbs.dreamstime.com/z/cockpit-boeing-air-bridge-cargo-standing-sheremetyevo-international-airport-moscow-region-russia-may-90966232.jpg" alt="747 Cockpit" />
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlozcE6_nH3zPIv4mClp4zdw9B8sNPzLWZXg&s" alt="747 Upper Deck" />
 </section>
 
 <section id="fun-facts">
@@ -6960,7 +6905,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
     <li>💼 <strong>UPS & Atlas Air – Cargo liveries with powerful nose art</strong></li>
     <li>🇺🇸 <strong>Boeing “Dreamlifter” – Modified 747-400 for hauling 787 parts</strong></li>
   </ul>
-  <img src="https://via.placeholder.com/600x300?text=747+Liveries+Showcase" alt="747 Liveries" />
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwK-_H-t-l5Pe8ZRziul26eyhIyeuNhZACZQ&s" alt="747 Liveries" />
 </section>
 
 <section id="airforceone">
@@ -6972,7 +6917,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
     <li>🛠️ Contains a mini hospital, office space, and press area.</li>
     <li>🆕 The new version (VC-25B) based on the 747-8 is currently under development.</li>
   </ul>
-  <img src="https://via.placeholder.com/600x300?text=Air+Force+One" alt="Air Force One" />
+  <img src="https://www.popsci.com/wp-content/uploads/2021/01/19/JC4TKFJQG5CQTCWFF3V4JRTI7U.jpg?quality=85" alt="Air Force One" />
 </section>
 <section id="legacy">
   <h2>🔭 The 747's Future Legacy</h2>
@@ -6993,7 +6938,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
     <li>✈️ One aircraft was N905NA — used from 1977 until 2012.</li>
     <li>🪐 Part of test flights like Enterprise Approach & Landing Tests.</li>
   </ul>
-  <img src="https://via.placeholder.com/600x300?text=NASA+747+SCA+with+Shuttle" alt="NASA 747 Shuttle Carrier">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/NASA%27s_Shuttle_Carrier_Aircraft_905_%28front%29_and_911_%28rear%29.jpg" alt="NASA 747 Shuttle Carrier">
 </section>
 
 <section id="cockpit">
@@ -7056,7 +7001,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
     <li>🌡️ Heated tanks to prevent freezing at high altitudes</li>
     <li>🧠 Managed via a Fuel Quantity Indication System (FQIS)</li>
   </ul>
-  <img src="https://via.placeholder.com/600x300?text=747+Fuel+System+Diagram" alt="747 Fuel Diagram">
+  <img src="https://qph.cf2.quoracdn.net/main-qimg-7d2d36b0504575996d4f60e6c05ea7b0" alt="747 Fuel Diagram">
 </section>
 
 <section id="navigation">
@@ -7092,7 +7037,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
     <li>🎧 Remixed engine startup sounds into techno beats.</li>
     <li>🧢 Merch: 747 hats, socks, hoodies — the culture is real!</li>
   </ul>
-  <img src="https://via.placeholder.com/600x300?text=747+Meme+Collage" alt="747 Memes">
+  <img src="https://i.imgflip.com/4tz5ax.jpg" alt="747 Memes">
 </section>
 <style>
   /* Reset and base */
@@ -7224,7 +7169,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
     <li>🏗️ Multiple decks and roller tracks for efficient cargo movement</li>
     <li>🛡️ Pressurized cargo bay allows safe transport of sensitive goods</li>
   </ul>
-  <img src="https://via.placeholder.com/600x300?text=747+Cargo+Bay" alt="747 Cargo Bay">
+  <img src="https://images.squarespace-cdn.com/content/v1/513bcb31e4b0df53688faccb/1588105606852-YG0RH2FFYJAAZE3QC2GS/b747f+cargo+bay.JPG" alt="747 Cargo Bay">
 </section>
 
 <section id="mods">
@@ -7267,7 +7212,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
     <li>🛫 Supporting UN peacekeeping logistics worldwide</li>
     <li>📦 Rapid deployment of emergency equipment</li>
   </ul>
-  <img src="https://via.placeholder.com/600x300?text=747+Humanitarian+Mission" alt="747 Humanitarian Mission" />
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUI9CiR2okelJ_87En0E_KELbt1X0i3g7iBQ&s" alt="747 Humanitarian Mission" />
 </section>
 
 <section id="landing-gear">
@@ -7292,7 +7237,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
     <li>🇳🇱 Amsterdam → Tokyo (connecting Europe to Japan)</li>
     <li>🇿🇦 Johannesburg → London (bridging Africa to Europe)</li>
   </ul>
-  <img src="https://via.placeholder.com/600x300?text=Historic+747+Flight+Routes" alt="747 Flight Routes Map" />
+  <img src="https://samchui.com/wp-content/uploads/2023/03/230327NS23380-800x545.jpeg" alt="747 Flight Routes Map" />
 </section>
 
 <section id="amenities">
@@ -7600,7 +7545,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
     <li>📡 Broadcast live worldwide, inspiring awe with size & innovation</li>
     <li>🦅 Pioneered jumbo jets and made affordable intercontinental air travel possible</li>
   </ul>
-  <img src="https://via.placeholder.com/600x300?text=747+Maiden+Flight+Legacy" alt="747 Maiden Flight" />
+  <img src="https://www.usatoday.com/gcdn/-mm-/b1e264d9441747391efebd7b2161b90eb034959e/c=0-33-798-484/local/-/media/USATODAY/None/2014/10/21/635495286184740024-RA001-first-747-JDL-13.jpg" alt="747 Maiden Flight" />
 </section>
 <style>
   ul li::before {
