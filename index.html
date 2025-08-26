@@ -567,9 +567,227 @@ blockquote {
   }
 
 </style>
+<head>
+  <title>My Website</title>
+  <style>
+    /* your existing CSS or search bar CSS here */
+  </style>
+
+  <!-- Paste this JS here -->
+  <script>
+    function goToHeading(event) {
+      event.preventDefault();
+      let query = document.getElementById("search").value.toLowerCase();
+      let headings = document.querySelectorAll("h1, h2, h3");
+      let found = false;
+      headings.forEach(h => {
+        if (h.textContent.toLowerCase().includes(query)) {
+          h.scrollIntoView({behavior: "smooth"});
+          found = true;
+        }
+      });
+      if (!found) {
+        alert("No heading found containing: " + query);
+      }
+    }
+  </script>
+</head>
 
      </head>
-  <body><u> The boeing 747:</u>The Boeing 747, also known as the "Queen of the Skies," is one of the most iconic airplanes in aviation history
+  <body>
+
+    <!DOCTYPE html>
+<html>
+<head>
+  <title>Aviation Website</title>
+  <style>
+    /* Search bar styling */
+    #searchBar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 10px;
+      background: #f8f8f8;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      z-index: 1000;
+    }
+
+    #search {
+      padding: 8px;
+      width: 280px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      background: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+
+    body {
+      margin-top: 60px;
+      font-family: Arial, sans-serif;
+    }
+
+    section {
+      padding: 100px 20px;
+      border-bottom: 1px solid #ddd;
+    }
+  </style>
+  <script>
+    function goToHeading(event) {
+      event.preventDefault();
+      let query = document.getElementById("search").value.toLowerCase();
+
+      // Map keywords to heading IDs
+      const sections = {
+        "747": "boeing747",
+        "airbus": "airbus",
+        "engines": "engines",
+        "aviation": "aviation"
+      };
+
+      if (sections[query]) {
+        document.getElementById(sections[query]).scrollIntoView({behavior: "smooth"});
+      } else {
+        alert("Section not found! Try: 747, Airbus, Engines, Aviation...");
+      }
+    }
+  </script>
+</head>
+<body>
+  <!-- Search bar at top -->
+  <div id="searchBar">
+    <form onsubmit="goToHeading(event)">
+      <input type="text" id="search" placeholder="Go to section (747, Airbus, Engines)...">
+      <button type="submit">Go</button>
+    </form>
+  </div>
+  <div id="searchBar">
+  <form onsubmit="goToHeading(event)">
+    <input type="text" id="search" placeholder="Type a heading...">
+    <button type="submit">Go</button>
+  </form>
+</div>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Aviation Website</title>
+  <style>
+    /* Search bar styling */
+    #searchBar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 10px;
+      background: #f8f8f8;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      z-index: 1000;
+    }
+
+    #search {
+      padding: 8px;
+      width: 280px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      background: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+
+    body {
+      margin-top: 60px;
+      font-family: Arial, sans-serif;
+    }
+
+    section {
+      padding: 100px 20px;
+      border-bottom: 1px solid #ddd;
+    }
+  </style>
+  <script>
+    function goToHeading(event) {
+      event.preventDefault();
+      let query = document.getElementById("search").value.toLowerCase();
+
+      // Map keywords to heading IDs
+      const sections = {
+        "747": "boeing747",
+        "airbus": "airbus",
+        "engines": "engines",
+        "aviation": "aviation"
+      };
+
+      if (sections[query]) {
+        document.getElementById(sections[query]).scrollIntoView({behavior: "smooth"});
+      } else {
+        alert("Section not found! Try: 747, Airbus, Engines, Aviation...");
+      }
+    }
+  </script>
+</head>
+<body>
+  <!-- SEARCH BAR GOES HERE -->
+  <div id="searchBar">
+    <form onsubmit="goToHeading(event)">
+      <input type="text" id="search" placeholder="Type a heading...">
+      <button type="submit">Go</button>
+    </form>
+  </div>
+  <!-- Search bar at top -->
+  <div id="searchBar">
+    <form onsubmit="goToHeading(event)">
+      <input type="text" id="search" placeholder="Go to section (747, Airbus, Engines)...">
+      <button type="submit">Go</button>
+    </form>
+  </div>
+
+  <!-- Page Content -->
+  <section id="aviation">
+    <h1>Aviation</h1>
+    <p>General introduction about aviation and airplanes.</p>
+  </section>
+
+  <section id="boeing747">
+    <h1>Boeing 747</h1>
+    <p>The Queen of the Skies! Info about the legendary Boeing 747.</p>
+  </section>
+
+  <section id="airbus">
+    <h1>Airbus</h1>
+    <p>All about Airbus aircraft and their innovations.</p>
+  </section>
+
+  <section id="engines">
+    <div id="searchBar">
+  <form onsubmit="goToHeading(event)">
+    <input type="text" id="search" placeholder="Type a heading...">
+    <button type="submit">Go</button>
+  </form>
+</div>
+    <h1>Engines</h1>
+    <p>Information about jet engines and how they power aircraft.</p>
+  </section>
+    <u> The boeing 747:</u>The Boeing 747, also known as the "Queen of the Skies," is one of the most iconic airplanes in aviation history
     First introduced in 1970, it was the worlds first wide-body aircraft and could carry more passengers than any other jet at the time.
     Its distinctive humpbacked upper deck made it instantly recognizable
     The 747 was used for both passenger travel and cargo, and it helped make international air travel more affordable and accessible.
@@ -727,7 +945,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
   <h3>Engines</h3>
   <p>Early 747s used Pratt & Whitney JT9D engines. Later models switched to General Electric CF6 and Rolls-Royce RB211 engines, known for power and fuel efficiency.</p>
 
-  <img src="https://upload.wikimedia.org/wikipedia/commons/5/58/Boeing_747-400_N606US_1.jpg" alt="Close up of Boeing 747 wing and engines" />
+  <img src="https://i.ytimg.com/vi/Km1Di25DZ9A/maxresdefault.jpg" alt="Close up of Boeing 747 wing and engines" />
 
   <h3>Landing Gear</h3>
   <p>The 747 has a complex landing gear system with 18 wheels, designed to support the aircraft's enormous weight and provide stability during takeoff and landing.</p>
@@ -746,7 +964,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
   <h3>Flight Management System (FMS)</h3>
   <p>The FMS automates navigation and engine control, enabling efficient long-distance flights with optimized routes.</p>
 
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Boeing_747-400_Cockpit.jpg/800px-Boeing_747-400_Cockpit.jpg" alt="Boeing 747-400 cockpit" />
+  <img src="https://lh5.googleusercontent.com/proxy/HQgxpqV1FeZEN0u9BldYk7Yt7c4v6nHP4kNCMh67A30kgMGtBiHWlUeLnJYNxcRgmDQV2hTui8FfzFifOCzmOQNgsaiEX6u3cuixIh0hcskoyKNPJ-1_l6aUUnG61btmqQMWdsKG-0URrhHS" alt="Boeing 747-400 cockpit" />
 </section>
 
 <section id="cargo-variants">
@@ -762,8 +980,8 @@ It was taller than the Wright Brothers' first flight was long!</P>
   <h3>Air Force One</h3>
   <p>The U.S. presidential aircraft are highly modified 747-200 and 747-8 models equipped with advanced communication and defense systems.</p>
 
-  <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/VC-25A_Air_Force_One_takeoff_edit1.jpg" alt="Air Force One Boeing 747" />
-</section>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Air_Force_One_over_Mt._Rushmore.jpg" alt="Air Force One Boeing 747" />
+  </section>
 
 <section id="economic-impact">
   <h2>Economic and Industry Impact</h2>
@@ -814,7 +1032,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
     <li>Inspired model airplanes, toys, and aviation art worldwide.</li>
     <li>Symbolizes the golden age of commercial aviation.</li>
   </ul>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Boeing_747-400_Air_Force_One_-_10-31-2011_3.jpg" alt="Air Force One in flight" />
+  <img src="https://www.boeing.com/content/dam/boeing/boeingdotcom/defense/air-force-one/AF1_hero_lg.jpg" alt="Air Force One in flight" />
 </section>
 
 <section id="legacy">
@@ -902,9 +1120,9 @@ It was taller than the Wright Brothers' first flight was long!</P>
 
 <section id="gallery">
   <h2>Image Gallery</h2>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Boeing_747-8_Intercontinental_cropped.jpg" alt="Boeing 747-8 Intercontinental" />
-  <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/Boeing_747_8_Freighter_YVR_2015.jpg" alt="Boeing 747-8 Freighter" />
-  <img src="https://upload.wikimedia.org/wikipedia/commons/5/58/Boeing_747-400_N606US_1.jpg" alt="Boeing 747 wing and engines" />
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKvSP1t0s00MMq_5xE1ICmeDTnIYn56HeAng&s alt="Boeing 747-8 Intercontinental" />
+  <img src="https://www.aviationtoday.com/wp-content/uploads/2015/06/Boeing20747-8.jpg" alt="Boeing 747-8 Freighter" />
+  <img src="https://i.pinimg.com/736x/d8/ce/a0/d8cea0b6ac016953d8b7857bdf055816.jpg" alt="Boeing 747 wing and engines" />
 </section>
 
 <section id="references">
@@ -927,7 +1145,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
     <li><strong>Testing:</strong> Each aircraft undergoes rigorous ground and flight testing to meet safety standards.</li>
     <li><strong>Delivery:</strong> Once certified, the aircraft is painted in customer livery and delivered.</li>
   </ol>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/Boeing_Everett_plant.jpg" alt="Boeing Everett assembly plant" />
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmobBiI8QOcgpJ6gc05QOxpelMaKaceF20Dw&s" alt="Boeing Everett assembly plant" />
 </section>
 
 <section id="structural-engineering">
@@ -1017,7 +1235,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
     <li><strong>Model Kits and Toys:</strong> Popular among aviation enthusiasts and collectors worldwide.</li>
     <li><strong>Art and Photography:</strong> Frequently photographed as an icon of air travel.</li>
   </ul>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Boeing_747-8_Intercontinental_Aircraft.jpg" alt="Boeing 747 in flight at sunset" />
+  <img src="https://www.aerotime.aero/images/2025/05/Space-Shuttele-Enterprise-Boeing-747-shuttle-carrier.jpg alt="Boeing 747 in flight at sunset" />
 </section>
 
 <section id="technical-innovations">
@@ -1438,9 +1656,9 @@ It was taller than the Wright Brothers' first flight was long!</P>
 <section id="747-photos-gallery">
   <h2>Photos Gallery</h2>
   <p>A selection of iconic Boeing 747 photographs:</p>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/Boeing_747-8_First_Flight_2011_%28cropped%29.jpg" alt="Boeing 747-8 First Flight" width="500" />
-  <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Boeing_747_Shanghai_Airshow_2019.jpg" alt="Boeing 747 at Airshow" width="500" />
-  <img src="https://upload.wikimedia.org/wikipedia/commons/9/9f/747_400_United_Airlines_Chicago.jpg" alt="United Airlines Boeing 747-400" width="500" />
+  <img src="https://www.logisticsmiddleeast.com/2021/07/Boeing_747-8I_0.jpg" alt="Boeing 747-8 First Flight" width="500" />
+  <img src="https://i.ytimg.com/vi/YpfWl2rL7-8/maxresdefault.jpg" alt="Boeing 747 at Airshow" width="500" />
+  <img src="data:image/jpeg;base64,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"= alt="United Airlines Boeing 747-400" width="500" />
 </section>
 <section id="history-and-development">
   <h2>History and Development of the Boeing 747</h2>
@@ -1586,7 +1804,7 @@ It was taller than the Wright Brothers' first flight was long!</P>
     <li><strong>747-400F:</strong> Improved range and payload capabilities.</li>
     <li><strong>747-8F:</strong> Latest freighter model, largest and most capable cargo aircraft.</li>
   </ul>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/f/f0/747-8F_Cargolux_Boeing_747-8F_Fuselage.jpg" alt="747-8F Cargo Variant" width="600" />
+  <img src="https://www.airport-technology.com/wp-content/uploads/sites/14/2024/11/3l-image-79.jpg" alt="747-8F Cargo Variant" width="600" />
 </section>
 
 <section id="engineering-innovations">
@@ -1656,9 +1874,9 @@ It was taller than the Wright Brothers' first flight was long!</P>
 
 <section id="gallery">
   <h2>Photo Gallery</h2>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/68/Boeing_747_Structure.jpg" alt="Boeing 747 under construction" width="600" />
-  <img src="https://upload.wikimedia.org/wikipedia/commons/d/d2/Boeing_747-400_Lufthansa_D-ABVT_Manchester_2014-07-04_004.jpg" alt="Lufthansa Boeing 747-400" width="600" />
-  <img src="https://upload.wikimedia.org/wikipedia/commons/1/15/Boeing_747-8i_Flight_Photo.jpg" alt="Boeing 747-8i in flight" width="600" />
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWdgbcxLheO_ppI62nFRYwvMn0cEnWiFCYfQ&s" alt="Boeing 747 under construction" width="600" />
+  <img src="https://static1.simpleflyingimages.com/wordpress/wp-content/uploads/2022/09/Lufthansa-B747-400-Orlando.jpg" alt="Lufthansa Boeing 747-400" width="600" />
+  <img src="https://static1.simpleflyingimages.com/wordpress/wp-content/uploads/2022/10/Lufthansa-(Retro-Livery)-Boeing-747-830-D-ABYT-Cropped.png" alt="Boeing 747-8i in flight" width="600" />
 </section>
 
 <section id="references">
@@ -3780,8 +3998,8 @@ It was taller than the Wright Brothers' first flight was long!</P>
 </ul>
 
 <h3>📷 Gallery</h3>
-<img src="https://cdn.britannica.com/88/173388-050-B9D453D9/Boeing-747-400.jpg" alt="Boeing 747-400 in flight" width="600">
-<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Boeing_747-8.jpg" alt="Boeing 747-8 on runway" width="600">
+<img src="https://aeroaffaires.fr/wp-content/uploads/2019/07/boeing-747-400-ext.jpg" alt="Boeing 747-400 in flight" width="600">
+<img src="hhttps://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOt0JFaS1bWwQNbKaswjvkc3blQu25z2mgcw&s" alt="Boeing 747-8 on runway" width="600">
 
 <h3>🔮 The Legacy of the Boeing 747</h3>
 <p>The Boeing 747’s legacy goes beyond its technical specifications. It represents a turning point in aviation history, bringing people closer together and enabling the global economy we see today. Although production ended, its influence continues to inspire new generations of aircraft design.</p>
