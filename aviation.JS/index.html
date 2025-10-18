@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Epic Aviation Game</title>
+<style>
+  body { margin:0; overflow:hidden; font-family: Arial; background:#87CEEB; }
+  #sky { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+  #plane { position: absolute; width: 80px; top: 50%; left: 50px; transform: translateY(-50%); }
+  .cloud { position: absolute; }
+  .enemy { position: absolute; width: 60px; }
+  .bullet { position: absolute; width: 10px; height: 4px; background: red; }
+  .powerup { position: absolute; width: 40px; }
+  #score { position: absolute; top: 10px; left: 10px; font-size: 24px; color: #fff; }
+  #gameOver {
+    display:none; position:absolute; top:50%; left:50%;
+    transform:translate(-50%,-50%); font-size:40px; color:white;
+    text-align:center; background:rgba(0,0,0,0.6); padding:20px; border-radius:10px;
+  }
+  #gameOver button {
+    margin-top:15px; padding:10px 20px; font-size:20px; cursor:pointer;
+  }
+</style>
+</head>
+<body>
+<div id="sky">
+  <img id="plane" src="">
+  <div id="score">Score: 0</div>
+  <div id="gameOver">
+    <div id="finalScore"></div>
+    <button onclick="restartGame()">Restart</button>
+  </div>
+</div>
+
+<script>
+// ==============================
+// GAME STATE
+// ==============================
+const sky = document.getElementById("sky");
+const plane = document.getElementById("plane");
+const scoreEl = document.getElementById("score");
+const gameOverScreen = document.getElementById("gameOver");
+const finalScoreEl = document.getElementById("finalScore");
+
+let score = 0;
+let planePos = { x: 50, y: window.innerHeight/2 };
+let clouds = [];
+let enemies = [];
+let bullets = [];
+let powerups = [];
+let shield = false;
+let gameLoopId;
+let cloudTimer, enemyTimer, powerupTimer;
+
+// ==============================
+// HELPERS
+// ==============================
+function checkCollision(a, b) {
+  const aRect = a.getBoundingClientRect();
+  const bRect = b.getBoundingClientRect();
+  return !(aRect.right < bRect.left || 
+           aRect.left > bRect.right || 
+           aRect.bottom < bRect.top || 
+           aRect.top > bRect.bottom);
+}
+
+// ==============================
+// PLANE CONTROL
+// ==============================
+document.addEventListener("keydown", e => {
+  if(e.key === "ArrowUp") planePos.y = Math.max(0, planePos.y - 20);
+  if(e.key === "ArrowDown") planePos.y = Math.min(sky.offsetHeight - 80, planePos.y + 20);
+  if(e.key === "ArrowLeft") planePos.x = Math.max(0, planePos.x - 20);
+  if(e.key === "ArrowRight") planePos.x = Math.min(sky.offsetWidth - 80, planePos.x + 20);
+  if(e.key === " ") shootBullet();
+  plane.style.left = planePos.x + "px";
+  plane.style.top = planePos.y + "px";
+});
+
+function shootBullet() {
+  const bullet = document.createElement("div");
+  bullet.className = "bullet";
+  bullet.style.left = (planePos.x + 70) + "px";
+  bullet.style.top = (planePos.y + 35) + "px";
+  sky.appendChild(bullet);
+  bullets.push(bullet);
+}
+
+// ==============================
+// CLOUDS
+// ==============================
+function createCloud() {
+  const cloud = document.createElement("img");
+  cloud.src = "https://i.ibb.co/1MzyBdX/cloud.png";
+  cloud.className = "cloud";
+  cloud.style.width = (80 + Math.random()*120) + "px";
+  cloud.style.left = sky.offsetWidth + "px";
+  cloud.style.top = Math.random() * (sky.offsetHeight - 100) + "px";
+  cloud.dataset.speed = 2 + Math.random() * 3;
+  sky.appendChild(cloud);
+  clouds.push(cloud);
+}
+
+// ==============================
+// ENEMIES
+// ==============================
+function createEnemy() {
+  const enemy = document.createElement("img");
+  enemy.src = "https://i.ibb.co/RbTThxw/enemy.png";
+  enemy.className = "enemy";
+  enemy.style.left = sky.offsetWidth + "px";
+  enemy.style.top = Math.random() * (sky.offsetHeight - 100) + "px";
+  enemy.dataset.speed = 3;
+  sky.appendChild(enemy);
+  enemies.push(enemy);
+}
+
+// ==============================
+// POWERUPS
+// ==============================
+function createPowerUp() {
+  const pu = document.createElement("img");
+  pu.src = "https://i.ibb.co/z86N3Hn/star.png";
+  pu.className = "powerup";
+  pu.style.left = sky.offsetWidth + "px";
+  pu.style.top = Math.random() * (sky.offsetHeight - 50) + "px";
+  pu.dataset.speed = 4;
+  sky.appendChild(pu);
+  powerups.push(pu);
+}
+
+// ==============================
+// GAME LOOP
+// ==============================
+function gameLoop() {
+  // Move clouds
+  clouds.forEach((c, i) => {
+    let left = parseFloat(c.style.left);
+    c.style.left = (left - c.dataset.speed) + "px";
+    if(left < -200) { c.remove(); clouds.splice(i,1); }
+    if(checkCollision(plane, c)) endGame();
+  });
+
+  // Move enemies
+  enemies.forEach((e, i) => {
+    let left = parseFloat(e.style.left);
+    e.style.left = (left - e.dataset.speed) + "px";
+    if(left < -100) { e.remove(); enemies.splice(i,1); }
+    if(checkCollision(plane, e)) {
+      if(shield) { e.remove(); enemies.splice(i,1); shield=false; plane.style.filter="none"; }
+      else endGame();
+    }
+  });
+
+  // Move bullets
+  bullets.forEach((b, i) => {
+    let left = parseFloat(b.style.left);
+    b.style.left = (left + 8) + "px";
+    if(left > sky.offsetWidth) { b.remove(); bullets.splice(i,1); }
+    enemies.forEach((e, j) => {
+      if(checkCollision(b, e)) {
+        b.remove(); e.remove();
+        bullets.splice(i,1); enemies.splice(j,1);
+        score+=5; scoreEl.innerText="Score: " + score;
+      }
+    });
+  });
+
+  // Move powerups
+  powerups.forEach((p, i) => {
+    let left = parseFloat(p.style.left);
+    p.style.left = (left - p.dataset.speed) + "px";
+    if(left < -50) { p.remove(); powerups.splice(i,1); }
+    if(checkCollision(plane, p)) {
+      shield = true;
+      plane.style.filter = "drop-shadow(0 0 15px yellow)";
+      p.remove(); powerups.splice(i,1);
+      score+=10; scoreEl.innerText="Score: " + score;
+    }
+  });
+
+  gameLoopId = requestAnimationFrame(gameLoop);
+}
+
+// ==============================
+// GAME FLOW
+// ==============================
+function startGame() {
+  score = 0;
+  scoreEl.innerText = "Score: 0";
+  gameOverScreen.style.display="none";
+  cloudTimer = setInterval(createCloud, 1500);
+  enemyTimer = setInterval(createEnemy, 4000);
+  powerupTimer = setInterval(createPowerUp, 6000);
+  requestAnimationFrame(gameLoop);
+}
+
+function endGame() {
+  cancelAnimationFrame(gameLoopId);
+  clearInterval(cloudTimer);
+  clearInterval(enemyTimer);
+  clearInterval(powerupTimer);
+  finalScoreEl.innerText = "Game Over! Score: " + score;
+  gameOverScreen.style.display = "block";
+}
+
+function restartGame() {
+  // cleanup objects
+  [...clouds,...enemies,...bullets,...powerups].forEach(o => o.remove());
+  clouds=[]; enemies=[]; bullets=[]; powerups=[];
+  shield=false; plane.style.filter="none";
+  planePos={x:50, y:window.innerHeight/2};
+  plane.style.left=planePos.x+"px";
+  plane.style.top=planePos.y+"px";
+  startGame();
+}
+
+// ==============================
+startGame();
+// ==============================
+// NEW GAME STATE
+// ==============================
+let lives = 3;
+let level = 1;
+let enemyBullets = [];
+let levelTimer;
+
+// Update HUD
+const livesEl = document.createElement("div");
+const levelEl = document.createElement("div");
+document.getElementById("hud").appendChild(livesEl);
+document.getElementById("hud").appendChild(levelEl);
+livesEl.innerText = "Lives: " + lives;
+levelEl.innerText = "Level: " + level;
+
+// ==============================
+// ENEMY SHOOTING
+// ==============================
+function enemyShoot(enemy) {
+  const b = document.createElement("div");
+  b.className = "enemyBullet";
+  b.style.left = (parseFloat(enemy.style.left) - 10) + "px";
+  b.style.top = (parseFloat(enemy.style.top) + 20) + "px";
+  b.dataset.speed = 4;
+  sky.appendChild(b);
+  enemyBullets.push(b);
+}
+
+// ==============================
+// EXPLOSION EFFECT
+// ==============================
+function spawnExplosion(x, y) {
+  const ex = document.createElement("div");
+  ex.className = "explosion";
+  ex.style.left = x + "px";
+  ex.style.top = y + "px";
+  sky.appendChild(ex);
+  setTimeout(() => ex.remove(), 400);
+}
+
+// ==============================
+// LEVEL SYSTEM
+// ==============================
+function increaseLevel() {
+  level++;
+  levelEl.innerText = "Level: " + level;
+  // spawn enemies faster
+  clearInterval(enemyTimer);
+  enemyTimer = setInterval(createEnemy, Math.max(2000, 4000 - level * 300));
+}
+
+// ==============================
+// UPDATE GAME LOOP
+// ==============================
+function gameLoop() {
+  // Clouds
+  clouds.forEach((c, i) => {
+    let left = parseFloat(c.style.left);
+    c.style.left = (left - c.dataset.speed) + "px";
+    if(left < -200) { c.remove(); clouds.splice(i,1); }
+  });
+
+  // Enemies
+  enemies.forEach((e, i) => {
+    let left = parseFloat(e.style.left);
+    e.style.left = (left - e.dataset.speed) + "px";
+    if(Math.random() < 0.005 * level) enemyShoot(e); // enemies shoot randomly
+    if(left < -100) { e.remove(); enemies.splice(i,1); }
+    if(checkCollision(plane, e)) {
+      damagePlayer();
+      e.remove(); enemies.splice(i,1);
+    }
+  });
+
+  // Bullets
+  bullets.forEach((b, i) => {
+    let left = parseFloat(b.style.left);
+    b.style.left = (left + 8) + "px";
+    if(left > sky.offsetWidth) { b.remove(); bullets.splice(i,1); }
+    enemies.forEach((e, j) => {
+      if(checkCollision(b, e)) {
+        spawnExplosion(parseFloat(e.style.left), parseFloat(e.style.top));
+        b.remove(); e.remove();
+        bullets.splice(i,1); enemies.splice(j,1);
+        score+=10; scoreEl.innerText="Score: " + score;
+        if(score % 50 === 0) increaseLevel();
+      }
+    });
+  });
+
+  // Enemy bullets
+  enemyBullets.forEach((b, i) => {
+    let left = parseFloat(b.style.left);
+    b.style.left = (left - b.dataset.speed) + "px";
+    if(left < -20) { b.remove(); enemyBullets.splice(i,1); }
+    if(checkCollision(plane, b)) {
+      damagePlayer();
+      b.remove(); enemyBullets.splice(i,1);
+    }
+  });
+
+  // Powerups
+  powerups.forEach((p, i) => {
+    let left = parseFloat(p.style.left);
+    p.style.left = (left - p.dataset.speed) + "px";
+    if(left < -50) { p.remove(); powerups.splice(i,1); }
+    if(checkCollision(plane, p)) {
+      shield = true;
+      plane.style.filter = "drop-shadow(0 0 15px yellow)";
+      p.remove(); powerups.splice(i,1);
+      score+=20; scoreEl.innerText="Score: " + score;
+    }
+  });
+
+  gameLoopId = requestAnimationFrame(gameLoop);
+}
+
+// ==============================
+// PLAYER DAMAGE & LIVES
+// ==============================
+function damagePlayer() {
+  if(shield) {
+    shield = false;
+    plane.style.filter = "none";
+    return;
+  }
+  lives--;
+  livesEl.innerText = "Lives: " + lives;
+  if(lives <= 0) endGame();
+}
+
+// ==============================
+// UPDATE START / END / RESTART
+// ==============================
+function startGame() {
+  score = 0; lives = 3; level = 1;
+  scoreEl.innerText = "Score: 0";
+  livesEl.innerText = "Lives: " + lives;
+  levelEl.innerText = "Level: " + level;
+  gameOverScreen.style.display="none";
+
+  cloudTimer = setInterval(createCloud, 1500);
+  enemyTimer = setInterval(createEnemy, 4000);
+  powerupTimer = setInterval(createPowerUp, 8000);
+  levelTimer = setInterval(increaseLevel, 20000);
+
+  requestAnimationFrame(gameLoop);
+}
+
+function endGame() {
+  cancelAnimationFrame(gameLoopId);
+  clearInterval(cloudTimer);
+  clearInterval(enemyTimer);
+  clearInterval(powerupTimer);
+  clearInterval(levelTimer);
+  finalScoreEl.innerText = "Game Over! Score: " + score;
+  gameOverScreen.style.display = "block";
+}
+
+function restartGame() {
+  [...clouds, ...enemies, ...bullets, ...powerups, ...enemyBullets].forEach(o => o.remove());
+  clouds=[]; enemies=[]; bullets=[]; powerups=[]; enemyBullets=[];
+  shield=false; plane.style.filter="none";
+  planePos={x:50, y:window.innerHeight/2};
+  plane.style.left=planePos.x+"px";
+  plane.style.top=planePos.y+"px";
+  startGame();
+}
+// ==============================
+// EXPLOSIONS
+// ==============================
+function createExplosion(x, y) {
+  const explosion = document.createElement("div");
+  explosion.className = "explosion";
+  explosion.style.left = x + "px";
+  explosion.style.top = y + "px";
+  sky.appendChild(explosion);
+
+  setTimeout(() => {
+    explosion.remove();
+  }, 500);
+}
+
+// ==============================
+// BOSS ENEMY
+// ==============================
+let boss = null;
+let bossHealth = 0;
+
+function spawnBoss() {
+  if (boss) return; // only one boss at a time
+  boss = document.createElement("img");
+  boss.src = "https://i.ibb.co/XsQwLZP/boss.png";
+  boss.className = "enemy";
+  boss.style.width = "150px";
+  boss.style.left = sky.offsetWidth - 200 + "px";
+  boss.style.top = (sky.offsetHeight / 2 - 75) + "px";
+  sky.appendChild(boss);
+  bossHealth = 20 + level * 5; // scales with level
+}
+
+function updateBoss() {
+  if (!boss) return;
+
+  let left = parseInt(boss.style.left);
+  boss.style.left = left - 2 + "px";
+
+  // Boss fires bullets
+  if (Math.random() < 0.02) {
+    const bullet = document.createElement("div");
+    bullet.className = "enemyBullet";
+    bullet.style.left = parseInt(boss.style.left) + "px";
+    bullet.style.top = parseInt(boss.style.top) + 75 + "px";
+    sky.appendChild(bullet);
+    enemyBullets.push(bullet);
+  }
+
+  if (left < -200) {
+    boss.remove();
+    boss = null;
+  }
+}
+
+// ==============================
+// SOUND EFFECTS
+// ==============================
+const shootSound = new Audio("https://freesound.org/data/previews/66/66717_931655-lq.mp3");
+const explosionSound = new Audio("https://freesound.org/data/previews/140/140867_2398403-lq.mp3");
+const powerupSound = new Audio("https://freesound.org/data/previews/331/331912_3248244-lq.mp3");
+
+function playSound(sound) {
+  try { sound.currentTime = 0; sound.play(); } catch {}
+}
+
+// Example: playSound(shootSound);
+
+// ==============================
+// GAME STATES (start → play → over)
+// ==============================
+let gameRunning = false;
+
+function startGame() {
+  gameRunning = true;
+  score = 0;
+  lives = 3;
+  level = 1;
+  boss = null;
+  bossHealth = 0;
+  scoreEl.innerText = "Score: 0";
+  document.getElementById("lives").innerText = "Lives: " + lives;
+  document.getElementById("level").innerText = "Level: " + level;
+}
+
+function gameOver() {
+  gameRunning = false;
+  alert("Game Over! Final Score: " + score);
+  location.reload();
+}
+
+</script>
+</body>
+</html>
